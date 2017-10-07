@@ -1,8 +1,7 @@
 <?php
+require __DIR__ . '/../GameState.php';
 
-require __DIR__ . '/../player.php';
-
-class PlayerTest extends \PHPUnit\Framework\TestCase {
+class GameStateTest extends \PHPUnit\Framework\TestCase {
 
     private $gameState = <<<EOL
   {
@@ -83,7 +82,7 @@ EOL;
       "minimum_raise": 240,
       "dealer": 1,
       "orbits": 7,
-      "in_action": 2,
+      "in_action": 1,
 
       "players": [
         {
@@ -131,52 +130,47 @@ EOL;
 EOL;
 
     /** @test */
-    public function it_returns_an_integer()
+    public function it_returns_the_in_action_player()
     {
-        $player = new \Player();
+        $gameStateJson = $this->parse($this->gameState);
 
-        $response = $this->betRequest($player, $this->gameState);
+        $gameState = new GameState($gameStateJson);
 
-        var_dump($response);
-
-        $this->assertTrue(is_integer($response));
+        $this->assertEquals($gameState->getInActionPlayer(),$gameStateJson['players'][2]);
     }
 
     /** @test */
-    public function it_folds_if_more_than_2_players_in_the_table()
+    public function it_returns_the_in_hole_cards()
     {
-        $player = new \Player();
+        $gameStateJson = $this->parse($this->gameState);
 
-        $response = $this->betRequest($player, $this->gameState);
+        $gameState = new GameState($gameStateJson);
 
-        $this->assertTrue($response == 0);
+        $this->assertEquals($gameState->getHoleCards(),$gameStateJson['players'][2]['hole_cards']);
     }
 
     /** @test */
-    public function it_calls_all_in_if_only_2_players_in_the_table()
+    public function it_returns_the_community_cards()
     {
-        $player = new \Player();
+        $gameStateJson = $this->parse($this->gameState);
 
-        $response = $this->betRequest($player, $this->gameState2);
+        $gameState = new GameState($gameStateJson);
 
-        $this->assertTrue($response == 10000);
+        $this->assertEquals($gameState->getCommunityCards(),$gameStateJson['community_cards']);
     }
 
-    private function betRequest(Player $player, $gameState)
+    /** @test */
+    public function it_counts_the_remaining_players()
     {
-        return $player->betRequest(json_decode($gameState, true));
+        $gameStateJson = $this->parse($this->gameState);
+
+        $gameState = new GameState($gameStateJson);
+
+        $this->assertEquals($gameState->getRemainingPlayersCount(),3);
     }
 
     private function parse($gameState)
     {
         return json_decode($gameState, true);
-    }
-
-    /** @test */
-    public function it_parses_json()
-    {
-        $json = json_decode($this->gameState, true);
-
-        $this->assertTrue(is_array($json));
     }
 }

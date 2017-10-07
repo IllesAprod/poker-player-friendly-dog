@@ -1,31 +1,37 @@
 <?php
 
+require __DIR__ . '/Init.php';
+
 class Player
 {
     const VERSION = "Default PHP folding player";
 
+    /** @var  GameState */
+    private $gameState;
+
+    /** @var  Hand */
+    private $hand;
+
     public function betRequest($gameState)
     {
-        if ($this->countActivePlayers($gameState) > 2){
+        $this->init($gameState);
+
+        if ($this->gameState->getRemainingPlayersCount() > 2){
             return 0;
         }
 
         return 10000;
     }
 
-    public function showdown($game_state)
+    public function showdown($gameState)
     {
     }
 
-    public function countActivePlayers($gameState)
+    private function init($gameState)
     {
-        $count = 0;
-        foreach ($gameState['players'] as $player){
-            if ($player['status'] == 'active'){
-                $count++;
-            }
-        }
-
-        return $count;
+        $init = new Init($gameState);
+        $objects = $init->init();
+        $this->gameState = $objects['gameState'];
+        $this->hand = $objects['hand'];
     }
 }
