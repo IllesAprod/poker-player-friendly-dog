@@ -168,4 +168,16 @@ EOL;
 
         $this->assertEquals(11, $hand->getHighestRule()->getValue()->getRank());
     }
+
+    /** @test */
+    public function it_returns_one_pair()
+    {
+        $holeCard1 = new Card(4, 'spades');
+        $holeCard2 = new Card(4, 'hearts');
+        $communityCard1 = new Card(6, 'clubs');
+
+        $hand = new Hand([$holeCard1, $holeCard2], [$communityCard1]);
+
+        $this->assertInstanceOf(OnePairRule::class, $hand->getHighestRule());
+    }
 }

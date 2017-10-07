@@ -9,14 +9,30 @@ require_once __DIR__ . '/Rule.php';
  */
 class OnePairRule implements Rule
 {
+    private $value;
 
     public function isApplicable(Hand $hand)
     {
-        return false;
+        $hand->sort();
+
+        $cards = $hand->getCards();
+
+        $hasPair = false;
+
+        foreach ($cards as $index => $card){
+            if ($index < count($cards) - 2){
+                if ($cards[$index + 1]->getRank() == $card->getRank()){
+                    $hasPair = true;
+                    $this->value = $cards[$index + 1];
+                }
+            }
+        }
+
+        return $hasPair;
     }
 
     public function getValue()
     {
-        // TODO: Implement getValue() method.
+        return $this->value;
     }
 }

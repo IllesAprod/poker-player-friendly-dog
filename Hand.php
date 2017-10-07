@@ -4,6 +4,8 @@ require_once __DIR__ . '/Card.php';
 require_once __DIR__ . '/Hand.php';
 require_once __DIR__ . '/GameState.php';
 require_once __DIR__ . '/rules/HighCardRule.php';
+require_once __DIR__ . '/rules/OnePairRule.php';
+
 
 /**
  * Created by PhpStorm.
@@ -56,6 +58,7 @@ class Hand
     public function getHighestRule()
     {
         $rules = [
+            new OnePairRule(),
             new HighCardRule(),
         ];
 
