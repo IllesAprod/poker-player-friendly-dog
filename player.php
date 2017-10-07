@@ -200,6 +200,12 @@ class Player
     {
         $highestRule = $this->hand->getHighestRule();
 
+        $community = new Hand([], $this->gameState->getCommunityCards());
+
+        $highestCommunity = $community->getHighestRule();
+
+        $same = $highestRule->getValue()->getRank() == $highestCommunity->getValue()->getRank();
+
         if ($highestRule instanceof HighCardRule)
         {
             $this->logger->log('HighCardRule: ' . $highestRule->getValue()->getRank());
@@ -210,7 +216,7 @@ class Player
             }
         }
 
-        if ($highestRule instanceof OnePairRule)
+        if ($highestRule instanceof OnePairRule && !$same)
         {
             $this->logger->log('OnePairRule: ' . $highestRule->getValue()->getRank());
 
