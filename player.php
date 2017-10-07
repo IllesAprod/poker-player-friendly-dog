@@ -168,7 +168,7 @@ class Player
     }
 
     public function handleRelativeFourthPhase($rank){
-      if($rank >= 5){
+      if($rank >= 7){
         return 0;
       }else{
         return 10000;
