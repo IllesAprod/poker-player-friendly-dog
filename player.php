@@ -35,7 +35,7 @@ class Player
         $strHand = $this->hand->getHoleCardsAsString();
         $rank = $this->startingHandRanker->getStrength($strHand);
         $this->logger->log("Starting hand rank: ".$rank);
-        if ($rank > 2){
+        if ($rank >= 5){
           return 0;
         }
         return 10000;
