@@ -55,5 +55,16 @@ class GameState
       return $this->gameState['small_blind']*2;
     }
 
+    public function isSomeBodyRaised(){
+      return $this->someBodyRaisedWithAmount() > 0;
+    }
+
+    public function someBodyRaisedWithAmount(){
+      return $this->shouldCallAmount() - $this->getBlind();
+    }
+
+    public function shouldCallAmount(){
+      return $this->gameState['current_buy_in'] - $this->getInActionPlayer()['bet'];
+    }
 
 }

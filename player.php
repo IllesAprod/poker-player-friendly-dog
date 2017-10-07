@@ -13,6 +13,9 @@ class Player
     /** @var  Hand */
     private $hand;
 
+    /** @var blind*/
+    private $blind;
+
     /** @var StartingHandRanker */
     private $startingHandRanker;
 
@@ -31,7 +34,7 @@ class Player
     }
 
     public function getRelativeStack(){
-      return $this->getStack()/$this->gameState->getBlind();
+      return $this->getStack()/$this->blind;
     }
 
     public function betRequest($gameState)
@@ -43,30 +46,62 @@ class Player
         if ($this->gameState->getRemainingPlayersCount() > 2){
             return 0;
         }
-        $strHand = $this->hand->getHoleCardsAsString();
-        $this->logger->log("Starting hand: ".$strHand);
-        $rank = $this->startingHandRanker->getStrength($strHand);
-        $this->logger->log("Starting hand rank: ".$rank);
 
-        $relativeStack = $this->getRelativeStack();
+        return $this->playWithRelativeStack();
+    }
 
-        if($relativeStack > $this->config['relative_phase_one_limit']){
-          return $this->handleRelativeFirstPhase($rank);
-        } else if($relativeStack > $this->config['relative_phase_two_limit']){
-          return $this->handleRelativeSecondPhase($rank);
-        } else if($relativeStack > $this->config['relative_phase_three_limit']){
-          return $this->handleRelativeThirdPhase($rank);
-        } else {
-          return $this->handleRelativeFourthPhase($rank);
-        }
+    public function playWithRelativeStack(){
+      $strHand = $this->hand->getHoleCardsAsString();
+      $this->logger->log("Starting hand: ".$strHand);
+      $rank = $this->startingHandRanker->getStrength($strHand);
+      $this->logger->log("Starting hand rank: ".$rank);
+
+      $relativeStack = $this->getRelativeStack();
+
+      if($relativeStack > $this->config['relative_phase_one_limit']){
+        return $this->handleRelativeFirstPhase($rank);
+      } else if($relativeStack > $this->config['relative_phase_two_limit']){
+        return $this->handleRelativeSecondPhase($rank);
+      } else if($relativeStack > $this->config['relative_phase_three_limit']){
+        return $this->handleRelativeThirdPhase($rank);
+      } else {
+        return $this->handleRelativeFourthPhase($rank);
+      }
     }
 
     public function handleRelativeFirstPhase($rank){
+  /*    $raised = $this->gameState->isSomeBodyRaised();
+        if($rank == 1){
+            if($raised){
+              return $this->gameState->shouldCallAmount();
+            }else{
+              return $this->blind*3;
+            }
+        } else if ($rank == 2){
+              if($raised){
+                return $this->blind*10, //MAx shouldCallAmount
+              }else{
+                return $this->blind*2;
+              }
+        } else if($rank == 3){
+              if($raised){
+                return $this->blind*5 // MAX
+              }else{
+                return $this->gameState->shouldCallAmount();
+              }
+        } else if($rank == 4){
+            return $this->blind; //MAX
+        } else {
+          return 0;
+        }
+*/
+
       if($rank <= $this->config['relative_phase_one_rank_limit']){
         return 10000;
       }else{
         return 0;
       }
+      
     }
 
     public function handleRelativeSecondPhase($rank){
@@ -100,6 +135,7 @@ class Player
         $this->config = parse_ini_file("config.ini");
         $objects = $init->init();
         $this->gameState = $objects['gameState'];
+        $this->blind = $this->gameState->getBlind();
         $this->hand = $objects['hand'];
         $this->startingHandRanker = $objects['startingHandRanker'];
     }
