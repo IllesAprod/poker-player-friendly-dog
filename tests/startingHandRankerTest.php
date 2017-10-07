@@ -1,9 +1,9 @@
 <?php
 
-require __DIR__ . '/../player.php';
+require_once __DIR__ . '/../StartingHandRanker.php';
 
-class PlayerTest extends \PHPUnit\Framework\TestCase {
-
+class StartingHandRankerTest extends \PHPUnit\Framework\TestCase {
+/*
     private $gameState = <<<EOL
   {
       "tournament_id":"550d1d68cd7bd10003000003",
@@ -103,8 +103,8 @@ EOL;
               "bet": 80,
               "hole_cards": [
                   {
-                      "rank": "6",
-                      "suit": "hearts"
+                      "rank": "A",
+                      "suit": "spades"
                   },
                   {
                       "rank": "K",
@@ -130,124 +130,66 @@ EOL;
   }
 EOL;
 
-
-    private $gameState3 = <<<EOL
-  {
-      "tournament_id":"550d1d68cd7bd10003000003",
-      "game_id":"550da1cb2d909006e90004b1",
-      "round":0,
-      "bet_index":0,
-      "small_blind": 10,
-      "current_buy_in": 320,
-      "pot": 400,
-      "minimum_raise": 240,
-      "dealer": 1,
-      "orbits": 7,
-      "in_action": 2,
-
-      "players": [
-        {
-              "id": 0,
-              "name": "Albert",
-              "status": "active",
-              "version": "Default random player",
-              "stack": 1010,
-              "bet": 320
-          },
-          {
-              "id": 2,
-              "name": "Bob",
-              "status": "active",
-              "version": "Default random player",
-              "stack": 1590,
-              "bet": 80,
-              "hole_cards": [
-                  {
-                      "rank": "Q",
-                      "suit": "spades"
-                  },
-                  {
-                      "rank": "A",
-                      "suit": "spades"
-                  }
-              ]
-          }
-      ],
-      "community_cards": [
-          {
-              "rank": "4",
-              "suit": "spades"
-          },
-          {
-              "rank": "A",
-              "suit": "hearts"
-          },
-          {
-              "rank": "6",
-              "suit": "clubs"
-          }
-      ]
-  }
-EOL;
-
-
-    /** @test */
-    public function it_returns_an_integer()
+    public function it_returns_6Ko()
     {
-        $player = new \Player();
+        $startingHand = new StartingHandRanker();
 
-        $response = $this->betRequest($player, $this->gameState);
+        $response = $startingHand->getHoleCardsAsString($this->parse($this->gameState));
 
         var_dump($response);
 
-        $this->assertTrue(is_integer($response));
+        $this->assertTrue($response == '6Ko');
     }
 
+    public function it_returns_AKs()
+    {
+        $startingHand = new StartingHandRanker();
+
+        $response = $startingHand->getHoleCardsAsString($this->parse($this->gameState2));
+
+        var_dump($response);
+
+        $this->assertTrue($response == 'AKs');
+    }
+*/
     /** @test */
-    public function it_folds_if_more_than_2_players_in_the_table()
-    {
-        $player = new \Player();
+    public function it_returns_rank_for_AKs()
+        {
+            $startingHand = new StartingHandRanker();
 
-        $response = $this->betRequest($player, $this->gameState);
+            $response = $startingHand->getStrength('AKs');
 
-        $this->assertTrue($response == 0);
-    }
+            var_dump($response);
 
-    /** @test */
-    public function it_folds_if_only_2_players_in_the_table_and_starting_hand_rank_low()
-    {
-        $player = new \Player();
+            $this->assertTrue($response == 1);
+        }
 
-        $response = $this->betRequest($player, $this->gameState2);
+        /** @test */
+        public function it_returns_rank_for_32o()
+            {
+                $startingHand = new StartingHandRanker();
 
-        $this->assertTrue($response == 0);
-    }
+                $response = $startingHand->getStrength('32o');
 
-    /** @test */
-    public function it_call_all_in_if_only_2_players_in_the_table_and_starting_hand_rank_high()
-    {
-        $player = new \Player();
+                var_dump($response);
 
-        $response = $this->betRequest($player, $this->gameState3);
+                $this->assertTrue($response == 8);
+            }
 
-        $this->assertTrue($response == 10000);
-    }
+            public function it_returns_rank_for_3Ks()
+                {
+                    $startingHand = new StartingHandRanker();
 
-    private function betRequest(Player $player, $gameState)
-    {
-        return $player->betRequest(json_decode($gameState, true));
-    }
+                    $response = $startingHand->getStrength('3Ko');
+
+                    var_dump($response);
+
+                    $this->assertTrue($response == 8);
+                }
 
     private function parse($gameState)
     {
         return json_decode($gameState, true);
     }
 
-    /** @test */
-    public function it_parses_json()
-    {
-        $json = json_decode($this->gameState, true);
-
-        $this->assertTrue(is_array($json));
-    }
 }
