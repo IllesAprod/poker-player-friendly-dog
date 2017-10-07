@@ -26,6 +26,14 @@ class Player
         $this->logger = new Logger();
     }
 
+    public function getStack(){
+      return $this->gameState->getInActionPlayer()['stack'];
+    }
+
+    public function getRelativeStack(){
+      return $this->getStack()/$this->gameState->getBlind();
+    }
+    
     public function betRequest($gameState)
     {
         $this->logger->log('Bet request called');
@@ -39,10 +47,30 @@ class Player
         $this->logger->log("Starting hand: ".$strHand);
         $rank = $this->startingHandRanker->getStrength($strHand);
         $this->logger->log("Starting hand rank: ".$rank);
-        if ($rank >= $this->config['rank_limit']){
-          return 0;
+
+        $relativeStack = $this->getRelativeStack();
+
+        if($relativeStack > 25){
+          if($rank == 1){
+            return 10000;
+          }else{
+            return 0;
+          }
+        } else if($relativeStack > 15){
+          if($rank < 3){
+            return 10000;
+          }else{
+            return 0;
+          }
+        } else if($relativeStack > 10){
+          if($rank < 5){
+            return 10000;
+          }else{
+            return 0;
+          }
+        } else {
+          return 10000;
         }
-        return 10000;
     }
 
     public function showdown($gameState)

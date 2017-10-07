@@ -51,4 +51,9 @@ class GameState
         return count($this->gameState['players'])-$outPlayersCount;
     }
 
+    public function getBlind(){
+      return $this->gameState['small_blind']*2;
+    }
+
+
 }
