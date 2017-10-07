@@ -70,24 +70,24 @@ class Player
       $call = $this->gameState->shouldCallAmount();
         if($rank == 1){
             if($raised){
-              return max($call, 10000);
+              return min($call, 10000);
             }else{
               return $this->blind*3;
             }
         } else if ($rank == 2){
               if($raised){
-                return max($this->blind*10, $call); //MAx shouldCallAmount
+                return min($this->blind*10, $call); //MAx shouldCallAmount
               }else{
                 return $this->blind*2;
               }
         } else if($rank == 3){
               if($raised){
-                return max($this->blind*5, $call); // MAX
+                return min($this->blind*5, $call); // MAX
               }else{
                 return $this->gameState->shouldCallAmount();
               }
         } else if($rank == 4){
-            return max($this->blind, $call); //MAX
+            return min($this->blind, $call); //MAX
         } else {
           return 0;
         }
@@ -98,30 +98,30 @@ class Player
         $call = $this->gameState->shouldCallAmount();
       if($rank == 1){
           if($raised){
-            return max($call, 10000);
+            return min($call, 10000);
           }else{
             return $this->blind*5;
           }
       } else if ($rank == 2){
             if($raised){
-              return max(10000, $call); //MAx shouldCallAmount
+              return min(10000, $call); //MAx shouldCallAmount
             }else{
               return $this->blind*3;
             }
       } else if($rank == 3){
             if($raised){
-              return max($this->blind*10, $call); // MAX
+              return min($this->blind*10, $call); // MAX
             }else{
               return $this->blind*2;
             }
       } else if($rank == 4){
         if($raised){
-          return max($this->blind*5, $call); // MAX
+          return min($this->blind*5, $call); // MAX
         }else{
           return $this->gameState->shouldCallAmount();
         }
       } else if($rank == 5){
-          return max($this->blind, $call); //MAX
+          return min($this->blind, $call); //MAX
       } else {
         return 0;
       }
@@ -134,31 +134,31 @@ class Player
             return 10000;
       } else if ($rank == 2){
             if($raised){
-              return max(10000, $call); //MAx shouldCallAmount
+              return min(10000, $call); //MAx shouldCallAmount
             }else{
               return $this->blind*5;
             }
       } else if($rank == 3){
             if($raised){
-              return max(10000, $call); // MAX
+              return min(10000, $call); // MAX
             }else{
               return $this->blind*3;
             }
       } else if($rank == 4){
         if($raised){
-          return max(10000, $call); // MAX
+          return min(10000, $call); // MAX
         }else{
           return $this->gameState->shouldCallAmount();
         }
       } else if($rank == 5){
         if($raised){
-            return max($this->blind*5, $call); //MAX
+            return min($this->blind*5, $call); //MAX
         }else{
           return $this->gameState->shouldCallAmount();
         }
       } else if($rank == 6){
         if($raised){
-            return max($this->blind, $call); //MAX
+            return min($this->blind, $call); //MAX
         }else{
           return $this->gameState->shouldCallAmount();
         }
