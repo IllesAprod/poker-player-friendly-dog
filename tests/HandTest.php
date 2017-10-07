@@ -180,4 +180,62 @@ EOL;
 
         $this->assertInstanceOf(OnePairRule::class, $hand->getHighestRule());
     }
+
+    /** @test */
+    public function it_returns_two_pair()
+    {
+        $holeCard1 = new Card(4, 'spades');
+        $holeCard2 = new Card(4, 'hearts');
+        $communityCard1 = new Card(6, 'clubs');
+        $communityCard2 = new Card(6, 'clubs');
+
+        $hand = new Hand([$holeCard1, $holeCard2], [$communityCard1, $communityCard2]);
+
+        $this->assertInstanceOf(TwoPairRule::class, $hand->getHighestRule());
+    }
+
+    /** @test */
+    public function it_returns_three_of_a_kind()
+    {
+        $holeCard1 = new Card(4, 'spades');
+        $holeCard2 = new Card(4, 'hearts');
+        $communityCard1 = new Card(4, 'clubs');
+        $communityCard2 = new Card(6, 'clubs');
+
+        $hand = new Hand([$holeCard1, $holeCard2], [$communityCard1, $communityCard2]);
+
+        $this->assertInstanceOf(ThreeOfAKindRule::class, $hand->getHighestRule());
+    }
+
+    /** @test */
+    public function it_returns_straight()
+    {
+        $holeCard1 = new Card(9, 'spades');
+        $holeCard2 = new Card(7, 'hearts');
+        $communityCard1 = new Card(6, 'clubs');
+        $communityCard2 = new Card(5, 'clubs');
+        $communityCard3 = new Card(8, 'clubs');
+        $communityCard4 = new Card(10, 'clubs');
+        $communityCard5 = new Card(12, 'clubs');
+
+        $hand = new Hand([$holeCard1, $holeCard2], [$communityCard1, $communityCard2, $communityCard3, $communityCard4, $communityCard5]);
+
+        $this->assertInstanceOf(StraightRule::class, $hand->getHighestRule());
+    }
+
+    /** @test */
+    public function it_returns_flush()
+    {
+        $holeCard1 = new Card(9, 'spades');
+        $holeCard2 = new Card(7, 'hearts');
+        $communityCard1 = new Card(6, 'clubs');
+        $communityCard2 = new Card(5, 'clubs');
+        $communityCard3 = new Card(8, 'clubs');
+        $communityCard4 = new Card(10, 'clubs');
+        $communityCard5 = new Card(12, 'clubs');
+
+        $hand = new Hand([$holeCard1, $holeCard2], [$communityCard1, $communityCard2, $communityCard3, $communityCard4, $communityCard5]);
+
+        $this->assertInstanceOf(FlushRule::class, $hand->getHighestRule());
+    }
 }

@@ -5,6 +5,10 @@ require_once __DIR__ . '/Hand.php';
 require_once __DIR__ . '/GameState.php';
 require_once __DIR__ . '/rules/HighCardRule.php';
 require_once __DIR__ . '/rules/OnePairRule.php';
+require_once __DIR__ . '/rules/TwoPairRule.php';
+require_once __DIR__ . '/rules/ThreeOfAKindRule.php';
+require_once __DIR__ . '/rules/StraightRule.php';
+require_once __DIR__ . '/rules/FlushRule.php';
 
 
 /**
@@ -58,6 +62,10 @@ class Hand
     public function getHighestRule()
     {
         $rules = [
+            new FlushRule(),
+            new StraightRule(),
+            new ThreeOfAKindRule(),
+            new TwoPairRule(),
             new OnePairRule(),
             new HighCardRule(),
         ];

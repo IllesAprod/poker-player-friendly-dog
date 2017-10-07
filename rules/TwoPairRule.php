@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/Rule.php';
+require_once __DIR__ . '/../Aggregator.php';
 
 /**
  * Created by PhpStorm.
@@ -11,11 +12,28 @@ class TwoPairRule implements Rule
 {
     public function isApplicable(Hand $hand)
     {
-        return false;
+        $hand->sort();
+
+        $cards = $hand->getCards();
+
+        $aggregator = new Aggregator();
+        $aggregated = $aggregator->aggregateByRank($cards);
+
+        $pairCount = 0;
+
+        foreach ($aggregated as $rank)
+        {
+            if (count($rank) == 2){
+                $pairCount++;
+                $this->value = end($rank);
+            }
+        }
+
+        return $pairCount == 2;
     }
 
     public function getValue()
     {
-        // TODO: Implement getValue() method.
+        return $this->value;
     }
 }

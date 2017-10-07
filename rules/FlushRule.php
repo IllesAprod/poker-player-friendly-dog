@@ -12,11 +12,25 @@ class FlushRule implements Rule
 {
     public function isApplicable(Hand $hand)
     {
-        return false;
+        $aggregator = new Aggregator();
+
+        $isFlush = false;
+
+        $aggregated = $aggregator->aggregateBySuit(        $hand->getCards());
+
+        foreach ($aggregated as $suit) {
+            if (count($suit) == 5){
+                $isFlush = true;
+                $this->value = end($suit);
+            }
+        }
+
+        return $isFlush;
+
     }
 
     public function getValue()
     {
-        // TODO: Implement getValue() method.
+        return $this->value;
     }
 }

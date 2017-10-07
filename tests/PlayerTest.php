@@ -198,8 +198,6 @@ EOL;
 
         $response = $this->betRequest($player, $this->gameState);
 
-        var_dump($response);
-
         $this->assertTrue(is_integer($response));
     }
 

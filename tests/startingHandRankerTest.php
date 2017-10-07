@@ -159,8 +159,6 @@ EOL;
 
             $response = $startingHand->getStrength('AKs');
 
-            var_dump($response);
-
             $this->assertTrue($response == 1);
         }
 
@@ -171,8 +169,6 @@ EOL;
 
                 $response = $startingHand->getStrength('32o');
 
-                var_dump($response);
-
                 $this->assertTrue($response == 8);
             }
 
@@ -181,8 +177,6 @@ EOL;
                     $startingHand = new StartingHandRanker();
 
                     $response = $startingHand->getStrength('3Ko');
-
-                    var_dump($response);
 
                     $this->assertTrue($response == 8);
                 }

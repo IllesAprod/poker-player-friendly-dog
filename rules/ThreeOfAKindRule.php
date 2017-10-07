@@ -12,7 +12,24 @@ class ThreeOfAKindRule implements Rule
 
     public function isApplicable(Hand $hand)
     {
-        return false;
+        $hand->sort();
+
+        $cards = $hand->getCards();
+
+        $aggregator = new Aggregator();
+        $aggregated = $aggregator->aggregateByRank($cards);
+
+        $drillCount = 0;
+
+        foreach ($aggregated as $rank)
+        {
+            if (count($rank) == 3){
+                $drillCount++;
+                $this->value = end($rank);
+            }
+        }
+
+        return $drillCount == 1;
     }
 
     public function getValue()

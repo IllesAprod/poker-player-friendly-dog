@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/Rule.php';
+require_once __DIR__ . '/../Aggregator.php';
+
 
 /**
  * Created by PhpStorm.
@@ -17,18 +19,20 @@ class OnePairRule implements Rule
 
         $cards = $hand->getCards();
 
-        $hasPair = false;
+        $aggregator = new Aggregator();
+        $aggregated = $aggregator->aggregateByRank($cards);
 
-        foreach ($cards as $index => $card){
-            if ($index < count($cards) - 2){
-                if ($cards[$index + 1]->getRank() == $card->getRank()){
-                    $hasPair = true;
-                    $this->value = $cards[$index + 1];
-                }
+        $pairCount = 0;
+
+        foreach ($aggregated as $rank)
+        {
+            if (count($rank) == 2){
+                $pairCount++;
+                $this->value = end($rank);
             }
         }
 
-        return $hasPair;
+        return $pairCount == 1;
     }
 
     public function getValue()
