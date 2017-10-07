@@ -215,7 +215,9 @@ class Player
 
             if ($this->gameState->getRemainingPlayersCount() > 1)
             {
-                return 0;
+                return $this->gameState->shouldCallAmount();
+            } else {
+                return $this->gameState->shouldCallAmount() + 300;
             }
         }
 

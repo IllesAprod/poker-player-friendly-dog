@@ -39,7 +39,6 @@ class GameState
         return count($this->getCommunityCards()) > 0;
     }
 
-
     public function getRemainingPlayersCount()
     {
         $outPlayersCount = 0;
