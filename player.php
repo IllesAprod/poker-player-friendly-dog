@@ -168,11 +168,16 @@ class Player
     }
 
     public function handleRelativeFourthPhase($rank){
-      return 10000;
+      if($rank >= 5){
+        return 0;
+      }else{
+        return 10000;
+      }
     }
 
     public function showdown($gameState)
     {
+      // NEVER EVER, FORGET IT
     }
 
     private function init($gameState)
