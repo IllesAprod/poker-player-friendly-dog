@@ -75,7 +75,34 @@ EOL;
     public function it_returns_an_integer()
     {
         $player = new \Player();
-        $this->assertTrue(is_integer($player->betRequest($this->gameState)));
+
+        $response = $this->betRequest($player, $this->gameState);
+
+        var_dump($response);
+
+        $this->assertTrue(is_integer($response));
     }
 
+    /** @test */
+    public function it_folds_if_more_than_2_players_in_the_table()
+    {
+        $player = new \Player();
+
+        $response = $this->betRequest($player, $this->gameState);
+
+        $this->assertTrue($response == 0);
+    }
+
+    private function betRequest(Player $player, $gameState)
+    {
+        $player->betRequest(json_decode($gameState, true));
+    }
+
+    /** @test */
+    public function it_parses_json()
+    {
+        $json = json_decode($this->gameState, true);
+
+        $this->assertTrue(is_array());
+    }
 }
