@@ -38,4 +38,19 @@ class Card
         return $this->suit;
     }
 
+    public function compare(Card $card)
+    {
+        if ($this->rank == $card->rank)
+        {
+            return 0;
+        }
+
+        if ($this->rank > $card->rank)
+        {
+            return 1;
+        }
+
+        return -1;
+    }
+
 }

@@ -8,5 +8,6 @@
  */
 interface Rule
 {
-
+    public function isApplicable(Hand $hand);
+    public function getValue();
 }
