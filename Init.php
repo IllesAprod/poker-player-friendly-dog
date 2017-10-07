@@ -3,6 +3,7 @@
 require_once __DIR__ . '/Card.php';
 require_once __DIR__ . '/Hand.php';
 require_once __DIR__ . '/GameState.php';
+require_once __DIR__. '/StartingHandRanker.php';
 
 
 /**
@@ -37,12 +38,14 @@ class Init
         $gameStateObject = new GameState($this->gameState);
         $holeCards = $this->convertCardsJsonToObjects($gameStateObject->getHoleCards());
         $communityCards = $this->convertCardsJsonToObjects($gameStateObject->getCommunityCards());
+        $startingHandRanker = new StartingHandRanker();
 
         $hand = new Hand($holeCards, $communityCards);
 
         return [
             'gameState' => $gameStateObject,
             'hand' => $hand,
+            'startingHandRanker' => $startingHandRanker,
         ];
     }
 

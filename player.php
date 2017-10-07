@@ -13,6 +13,9 @@ class Player
     /** @var  Hand */
     private $hand;
 
+    /** @var StartingHandRanker */
+    private $startingHandRanker;
+
     private $logger;
 
     function __construct()
@@ -29,7 +32,12 @@ class Player
         if ($this->gameState->getRemainingPlayersCount() > 2){
             return 0;
         }
-
+        $strHand = $this->hand->getHoleCardsAsString();
+        $rank = $this->startingHandRanker->getStrength($strHand);
+        $this->logger->log("Starting hand rank: ".$rank);
+        if ($rank > 2){
+          return 0;
+        }
         return 10000;
     }
 
@@ -43,5 +51,6 @@ class Player
         $objects = $init->init();
         $this->gameState = $objects['gameState'];
         $this->hand = $objects['hand'];
+        $this->startingHandRanker = $objects['startingHandRanker'];
     }
 }

@@ -37,5 +37,17 @@ class Hand
         return $this->holeCards;
     }
 
+    public function getHoleCardsAsString(){
+      $rank1 = $this->holeCards[0]->getRank();
+      $rank2 = $this->holeCards[1]->getRank();
+
+      $suitStr = 's';
+      if(($rank1 != $rank2) && $this->holeCards[0]->getSuit() != $this->holeCards[1]->getSuit()){
+        $suitStr = 'o';
+      }
+
+      return $rank1.$rank2.$suitStr;
+    }
+
 
 }
