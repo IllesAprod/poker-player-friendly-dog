@@ -16,6 +16,9 @@ class Player
     /** @var StartingHandRanker */
     private $startingHandRanker;
 
+    /** @var config */
+    private $config;
+
     private $logger;
 
     function __construct()
@@ -33,9 +36,10 @@ class Player
             return 0;
         }
         $strHand = $this->hand->getHoleCardsAsString();
+        $this->logger->log("Starting hand: ".$strHand);
         $rank = $this->startingHandRanker->getStrength($strHand);
         $this->logger->log("Starting hand rank: ".$rank);
-        if ($rank >= 5){
+        if ($rank >= $this->config['rank_limit']){
           return 0;
         }
         return 10000;
@@ -48,6 +52,8 @@ class Player
     private function init($gameState)
     {
         $init = new Init($gameState);
+
+        $this->config = parse_ini_file("config.ini");
         $objects = $init->init();
         $this->gameState = $objects['gameState'];
         $this->hand = $objects['hand'];

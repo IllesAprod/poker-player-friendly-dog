@@ -42,7 +42,7 @@ class GameState
         $outPlayersCount = 0;
 
         foreach ($this->gameState['players'] as $player) {
-            if ($player['status'] == 'out')
+            if ($player['status'] == 'out' || $player['status'] == 'folded')
             {
                 $outPlayersCount++;
             }
