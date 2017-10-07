@@ -70,38 +70,31 @@ class Player
     }
 
     public function handleRelativeFirstPhase($rank){
-  /*    $raised = $this->gameState->isSomeBodyRaised();
+      $raised = $this->gameState->isSomeBodyRaised();
+      $call = $this->gameState->shouldCallAmount();
         if($rank == 1){
             if($raised){
-              return $this->gameState->shouldCallAmount();
+              return max($call, 10000);
             }else{
               return $this->blind*3;
             }
         } else if ($rank == 2){
               if($raised){
-                return $this->blind*10, //MAx shouldCallAmount
+                return max($this->blind*10, $call); //MAx shouldCallAmount
               }else{
                 return $this->blind*2;
               }
         } else if($rank == 3){
               if($raised){
-                return $this->blind*5 // MAX
+                return max($this->blind*5, $call); // MAX
               }else{
                 return $this->gameState->shouldCallAmount();
               }
         } else if($rank == 4){
-            return $this->blind; //MAX
+            return max($this->blind, $call); //MAX
         } else {
           return 0;
         }
-*/
-
-      if($rank <= $this->config['relative_phase_one_rank_limit']){
-        return 10000;
-      }else{
-        return 0;
-      }
-      
     }
 
     public function handleRelativeSecondPhase($rank){
