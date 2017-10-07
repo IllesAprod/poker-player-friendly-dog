@@ -1,6 +1,7 @@
 <?php
 
 require __DIR__ . '/Init.php';
+require __DIR__. '/Logger.php';
 
 class Player
 {
@@ -12,8 +13,17 @@ class Player
     /** @var  Hand */
     private $hand;
 
+    private $logger;
+
+    function __construct()
+    {
+        $this->logger = new Logger();
+    }
+
     public function betRequest($gameState)
     {
+        $this->logger->log('Bet request called');
+
         $this->init($gameState);
 
         if ($this->gameState->getRemainingPlayersCount() > 2){
