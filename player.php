@@ -205,6 +205,7 @@ class Player
             $this->logger->log('HighCardRule: ' . $highestRule->getValue()->getRank());
             if ($this->gameState->getRemainingPlayersCount() > 1)
             {
+                $this->logger->log('Fold');
                 return 0;
             }
         }
@@ -215,8 +216,10 @@ class Player
 
             if ($this->gameState->getRemainingPlayersCount() > 1)
             {
+                $this->logger->log('Hold');
                 return $this->gameState->shouldCallAmount();
             } else {
+                $this->logger->log('Raise');
                 return $this->gameState->shouldCallAmount() + 300;
             }
         }
@@ -227,8 +230,10 @@ class Player
 
             if ($this->gameState->getRemainingPlayersCount() > 1)
             {
+                $this->logger->log('Hold');
                 return $this->gameState->shouldCallAmount();
             } else {
+                $this->logger->log('All in');
                 return 10000;
             }
         }
@@ -249,6 +254,7 @@ class Player
         {
             $this->logger->log('StraightRule: ' . $highestRule->getValue()->getRank());
 
+            $this->logger->log('All in');
             return 10000;
         }
 
@@ -256,6 +262,7 @@ class Player
         {
             $this->logger->log('FlushRule: ' . $highestRule->getValue()->getRank());
 
+            $this->logger->log('All in');
             return 10000;
         }
     }
