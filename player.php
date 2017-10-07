@@ -33,7 +33,7 @@ class Player
     public function getRelativeStack(){
       return $this->getStack()/$this->gameState->getBlind();
     }
-    
+
     public function betRequest($gameState)
     {
         $this->logger->log('Bet request called');
@@ -50,27 +50,43 @@ class Player
 
         $relativeStack = $this->getRelativeStack();
 
-        if($relativeStack > 25){
-          if($rank == 1){
-            return 10000;
-          }else{
-            return 0;
-          }
-        } else if($relativeStack > 15){
-          if($rank < 3){
-            return 10000;
-          }else{
-            return 0;
-          }
-        } else if($relativeStack > 10){
-          if($rank < 5){
-            return 10000;
-          }else{
-            return 0;
-          }
+        if($relativeStack > $this->config['relative_phase_one_limit']){
+          return $this->handleRelativeFirstPhase($rank);
+        } else if($relativeStack > $this->config['relative_phase_two_limit']){
+          return $this->handleRelativeSecondPhase($rank);
+        } else if($relativeStack > $this->config['relative_phase_three_limit']){
+          return $this->handleRelativeThirdPhase($rank);
         } else {
-          return 10000;
+          return $this->handleRelativeFourthPhase($rank);
         }
+    }
+
+    public function handleRelativeFirstPhase($rank){
+      if($rank <= $this->config['relative_phase_one_rank_limit']){
+        return 10000;
+      }else{
+        return 0;
+      }
+    }
+
+    public function handleRelativeSecondPhase($rank){
+      if($rank <= $this->config['relative_phase_two_rank_limit']){
+        return 10000;
+      }else{
+        return 0;
+      }
+    }
+
+    public function handleRelativeThirdPhase($rank){
+      if($rank <= $this->config['relative_phase_three_rank_limit']){
+        return 10000;
+      }else{
+        return 0;
+      }
+    }
+
+    public function handleRelativeFourthPhase($rank){
+      return 10000;
     }
 
     public function showdown($gameState)
