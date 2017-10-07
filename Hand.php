@@ -63,7 +63,7 @@ class Hand
     {
         $rules = [
             new FlushRule(),
-            new StraightRule(),
+            //new StraightRule(),
             new ThreeOfAKindRule(),
             new TwoPairRule(),
             new OnePairRule(),

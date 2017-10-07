@@ -43,7 +43,11 @@ class Player
 
         $this->init($gameState);
 
-        return $this->playWithRelativeStack();
+        if ($this->gameState->isPostFlop()){
+            return $this->playPostFlopStrategy();
+        } else {
+            return $this->playWithRelativeStack();
+        }
     }
 
     public function playWithRelativeStack(){
@@ -190,5 +194,65 @@ class Player
         $this->blind = $this->gameState->getBlind();
         $this->hand = $objects['hand'];
         $this->startingHandRanker = $objects['startingHandRanker'];
+    }
+
+    public function playPostFlopStrategy()
+    {
+        $highestRule = $this->hand->getHighestRule();
+
+        if ($highestRule instanceof HighCardRule)
+        {
+            $this->logger->log('HighCardRule: ' . $highestRule->getValue()->getRank());
+            if ($this->gameState->getRemainingPlayersCount() > 1)
+            {
+                return 0;
+            }
+        }
+
+        if ($highestRule instanceof OnePairRule)
+        {
+            $this->logger->log('OnePairRule: ' . $highestRule->getValue()->getRank());
+
+            if ($this->gameState->getRemainingPlayersCount() > 1)
+            {
+                return 0;
+            }
+        }
+
+        if ($highestRule instanceof TwoPairRule)
+        {
+            $this->logger->log('TwoPairRule: ' . $highestRule->getValue()->getRank());
+
+            if ($this->gameState->getRemainingPlayersCount() > 1)
+            {
+                return 0;
+            }
+        }
+
+        if ($highestRule instanceof ThreeOfAKindRule)
+        {
+            $this->logger->log('ThreeOfAKindRule: ' . $highestRule->getValue()->getRank());
+
+            if ($this->gameState->getRemainingPlayersCount() > 1)
+            {
+                return 10000;
+            } else {
+                $this->gameState->shouldCallAmount();
+            }
+        }
+
+        if ($highestRule instanceof StraightRule)
+        {
+            $this->logger->log('StraightRule: ' . $highestRule->getValue()->getRank());
+
+            return 10000;
+        }
+
+        if ($highestRule instanceof FlushRule)
+        {
+            $this->logger->log('FlushRule: ' . $highestRule->getValue()->getRank());
+
+            return 10000;
+        }
     }
 }

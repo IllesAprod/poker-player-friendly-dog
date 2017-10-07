@@ -22,10 +22,8 @@ class GameState
 
     public function getInActionPlayer()
     {
-        foreach ($this->gameState['players'] as $player)
-        {
-            if ($player['id'] == $this->gameState['in_action'])
-            {
+        foreach ($this->gameState['players'] as $player) {
+            if ($player['id'] == $this->gameState['in_action']) {
                 return $player;
             }
         }
@@ -36,35 +34,43 @@ class GameState
         return $this->gameState['community_cards'];
     }
 
+    public function isPostFlop()
+    {
+        return count($this->getCommunityCards()) > 0;
+    }
+
 
     public function getRemainingPlayersCount()
     {
         $outPlayersCount = 0;
 
         foreach ($this->gameState['players'] as $player) {
-            if ($player['status'] == 'out' || $player['status'] == 'folded')
-            {
+            if ($player['status'] == 'out' || $player['status'] == 'folded') {
                 $outPlayersCount++;
             }
         }
 
-        return count($this->gameState['players'])-$outPlayersCount;
+        return count($this->gameState['players']) - $outPlayersCount;
     }
 
-    public function getBlind(){
-      return $this->gameState['small_blind']*2;
+    public function getBlind()
+    {
+        return $this->gameState['small_blind'] * 2;
     }
 
-    public function isSomeBodyRaised(){
-      return $this->someBodyRaisedWithAmount() > 0;
+    public function isSomeBodyRaised()
+    {
+        return $this->someBodyRaisedWithAmount() > 0;
     }
 
-    public function someBodyRaisedWithAmount(){
-      return $this->shouldCallAmount() - $this->getBlind();
+    public function someBodyRaisedWithAmount()
+    {
+        return $this->shouldCallAmount() - $this->getBlind();
     }
 
-    public function shouldCallAmount(){
-      return $this->gameState['current_buy_in'] - $this->getInActionPlayer()['bet'];
+    public function shouldCallAmount()
+    {
+        return $this->gameState['current_buy_in'] - $this->getInActionPlayer()['bet'];
     }
 
 }
