@@ -44,9 +44,10 @@ class Hand
       $rank1 = $this->holeCards[0]->getRank();
       $rank2 = $this->holeCards[1]->getRank();
 
-      $suitStr = 's';
-      if(($rank1 != $rank2) && $this->holeCards[0]->getSuit() != $this->holeCards[1]->getSuit()){
-        $suitStr = 'o';
+      if($rank1 == $rank2 || $this->holeCards[0]->getSuit() != $this->holeCards[1]->getSuit()){
+        $suitStr = "o";
+      }else{
+        $suitStr = "s";
       }
 
       return $rank1.$rank2.$suitStr;
