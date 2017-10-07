@@ -43,12 +43,12 @@ class Player
 
         $this->init($gameState);
 
-        if ($this->gameState->isPostFlop()){
-            return $this->playPostFlopStrategy();
+      //  if ($this->gameState->isPostFlop()){
+      //      return $this->playPostFlopStrategy();
 //            return 10000;
-        } else {
+      //  } else {
             return $this->playWithRelativeStack();
-        }
+    //    }
     }
 
     public function playWithRelativeStack(){
