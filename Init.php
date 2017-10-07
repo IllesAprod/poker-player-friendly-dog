@@ -1,7 +1,9 @@
 <?php
 
-require __DIR__ . '/Card.php';
-require __DIR__ . '/Hand.php';
+require_once __DIR__ . '/Card.php';
+require_once __DIR__ . '/Hand.php';
+require_once __DIR__ . '/GameState.php';
+
 
 /**
  * Created by PhpStorm.
